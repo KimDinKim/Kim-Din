@@ -1,7 +1,7 @@
 " Научиться вводить данные со стандартного потока ввода. Понять, что делают и когда нужны:"
-s = input() # функция, которая позволяет распозновать введенные значения
-a, b = map(int, input().split()) # input - берет значения из ввода, .split() - разъединяет введенные значения, map - функция преобразования значений, int - преобразует в целочисленное значение
-a = list(map(int, input().split())) # list - просто выше указанное преобразует затем в список
+s = input() # функция input останавливает программу и ждет от пользователя ввода в стандартный поток ввода, затем она вводит полученное значение в качестве str
+a, b = map(int, input().split()) # input - считывание два целых значения записанных через пробел в одной строке, .split() - разъединяет введенные значения, map - функция преобразования значений, int - преобразует в целочисленное значение
+a = list(map(int, input().split())) # list - преодразует полученный в map значение и переводит в массив
 
 """ Написать программу, которая ведёт диалог:
   - Как тебя зовут?
@@ -37,7 +37,7 @@ print("Дом"*6)
 
 
 def penal():
-    a,b = map(float, input().split())
+    a,b = map(int, input().split())
     de = a // b
     fl = a % b
     print(f"Длина узкого пенала = {a} \n Есть карандаши длиной {b} см \n Коробка вмещает {de:.2f} карандашей, {fl:.2f} процентов пространства остается пустым")
@@ -52,8 +52,16 @@ penal()
 '''
 
 def answer():
-    a,b = map(float, input().split())
+    a,b = map(int, input().split())
     text = f'У пионера Васи есть грядка длиной {a} метров, в магазине продаются рулоны нетканки длиной {b} метров. Нужно купить {-(-a//b)} рулонов, чтобы покрыть всю грядку'
+    print(text)
+
+answer()
+
+
+def answer():
+    a,b = map(int, input().split())
+    text = f'У пионера Васи есть грядка длиной {a} метров, в магазине продаются рулоны нетканки длиной {b} метров. Нужно купить {(a + b - 1//b)} рулонов, чтобы покрыть всю грядку'
     print(text)
 
 answer()
@@ -61,7 +69,7 @@ answer()
 '''Запросить у пользователя a, b и сказать, является ли прямоугольный треугольник с такой стороной Пифагоровым, то есть, будет ли целой длина его гипотенузы.'''
 
 def is_pyfagor():
-    a,b = map(float, input().split())
+    a,b = map(int, input().split())
     c = (a**2 + b**2)**0.5
     if c % 1 == 0:
         print(f"Значение гипотенузы равна {int(c)}, треугольник - Пифагоров")
@@ -74,13 +82,14 @@ is_pyfagor()
 '''вывести первые 20 квадратов'''
 
 loop_sq = [x**2 for x in range(1, 21)]
-print(loop_sq)
+print(" ".join(map(str, loop_sq)))
 
 
 '''вывести все квадраты натуральных чисел меньше 1000'''
 
-loop_sq2 = [x**2 for x in range(1, 1000)]
-print(loop_sq2)
+loop_sq = [x**2 for x in range(1, 1000) if x**2 < 1000]
+print(" ".join(map(str, loop_sq)))
+
 
 
 '''запросить у пользователя натуральные числа a, b, вывести НОД чисел a и b'''
@@ -91,23 +100,27 @@ def gcd():
             a, b = b, a%b
     return a
 
-gcd()
+print(gcd())
 
-def fib_series(n: int) -> list:
-    if n <= 0:
-        return []
-    elif n == 1:
-        return [1]
-    elif n == 2:
-        return [1, 1]
+
+count = [0]
+cache = {}
+
+def fib(n: int, count, cache) -> list:
+    count[0] += 1
+
+    if n in cache:
+        return cache[n]
     
-    fib_list = [1, 1]
+    if n < 2:
+        return 1
     
-    for i in range(2, n):
-        next_fib = fib_list[i - 1] + fib_list[i - 2]
-        fib_list.append(next_fib)
-        
-    return fib_list
+    val = fib(n - 1, count, cache) + fib(n - 2, count, cache)
+    cache[n] = val
+    return val
+
+print(fib(30, count, cache))
+
 
 # Ввод числа n и вывод результата
 n = int(input("Введите число n: "))
@@ -139,13 +152,13 @@ print(f"Сумма обратных факториалов до {n-1}: {result}"
 '''с помощью цикла for и range распечатать:
   * 1 2 3 4 5 6 7 8
   * 1 3 5 7 9 11 13
-  * 21 18 15 12 11 8'''
+  * 21 18 15 12 9 6'''
 
 for i in range(1, 9, 1): print(i, end=" ")
 
 for i in range(1, 14, 2): print(i, end=" ")
 
-
+for i in range(21, 3, -3): print(i, end=" ")
 
 
 original_array = [10, 20, 30, 40, 50, 60]
@@ -153,4 +166,19 @@ new_array = original_array[::2]
 
 
 "ввести целые числа a и b и вывести решение уравнение a*x + b = 0. Обработать все варианты ввода."
+'* эту задачу можно сдать на платформе информатикс: https://informatics.mccme.ru/mod/statements/view.php?chapterid=260#1'
+
+
+def find_x():
+    a = int(input())
+    b = int(input())
+
+    if a == 0:
+        print("INF" if b == 0 else "NO")
+    else:
+        print((-b) // a if (-b) % a == 0 else "NO")
+
+
+find_x()
+
 
